@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" alignment="CENTER" prefWidth="300" prefHeight="200"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fr.bts.iris.slam.controller.LoginController">
+    <padding><Insets topRightBottomLeft="20"/></padding>
+
+    <TextField fx:id="emailField" promptText="Email"/>
+    <PasswordField fx:id="passwordField" promptText="Mot de passe"/>
+    <Button text="Valider" onAction="#handleLogin"/>
+    <Label fx:id="feedbackLabel"/>
+</VBox>
