@@ -40,6 +40,7 @@ public class LoginController {
                 User user = task.get().getUserData();
                 if (user != null) {
                     feedbackLabel.setText("Bienvenue, " + user.getEmail() + " !");
+                    HomeController.setUser(user);
                     Main.showHomeScreen();
                 } else {
                     feedbackLabel.setText(task.get().getMessage());

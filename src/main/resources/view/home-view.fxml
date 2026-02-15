@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.TextField?>
 <BorderPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bts.iris.slam.controller.HomeController">
     <top>
         <HBox>
@@ -78,8 +79,14 @@
         <HBox>
             <HBox style="-fx-border-color: #000000; -fx-border-style: hidden hidden hidden solid;" BorderPane.alignment="CENTER">
                 <padding><Insets bottom="8.0" left="8.0" right="8.0" top="8.0" /></padding>
-                <VBox>
+                <VBox fx:id="projectZone" >
+                    <VBox fx:id="projectsSection" >
 
+                    </VBox>
+                    <HBox fx:id="projectsInteraction" >
+                        <TextField fx:id="projectNameField" promptText="Nom du project"/>
+                        <Button onAction="#handleCreateProject">Créer</Button>
+                    </HBox>
                 </VBox>
             </HBox>
         </HBox>

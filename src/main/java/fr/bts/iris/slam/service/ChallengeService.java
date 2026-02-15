@@ -23,24 +23,15 @@ public class ChallengeService {
 
     public ChallengeResponse getCurrent() {
         try {
-
-            System.out.println("execution");
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(UrlEnum.CHALLENGE.toString()))
                     .GET()
                     .build();
 
-            System.out.println("entre 2");
-
             HttpResponse<String> response = client.send(request,
                     HttpResponse.BodyHandlers.ofString());
 
-            System.out.println("execution second");
-
             ChallengeResponse jsonChallengeResponse = mapper.readValue(response.body(), ChallengeResponse.class);
-
-            System.out.println("jsonChallengeResponse " + response.body());
 
             if (response.statusCode() > 0) {
                 return jsonChallengeResponse;

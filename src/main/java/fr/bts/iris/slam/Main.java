@@ -15,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        this.primaryStage = stage;
+        primaryStage = stage;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(ViewEnum.LOGIN.toString()));
         Scene scene = new Scene(loader.load());
