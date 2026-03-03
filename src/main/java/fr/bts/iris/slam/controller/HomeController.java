@@ -2,11 +2,7 @@ package fr.bts.iris.slam.controller;
 
 import fr.bts.iris.slam.dao.ProjectDAO;
 import fr.bts.iris.slam.dto.ChallengeResponse;
-import fr.bts.iris.slam.dto.UserResponse;
-import fr.bts.iris.slam.model.Challenge;
-import fr.bts.iris.slam.model.Project;
-import fr.bts.iris.slam.model.UrlEnum;
-import fr.bts.iris.slam.model.User;
+import fr.bts.iris.slam.model.*;
 import fr.bts.iris.slam.service.ChallengeService;
 import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
@@ -28,9 +24,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
-public class HomeController {
+import static fr.bts.iris.slam.Main.navTo;
+
+public class HomeController extends Controller {
 
     @FXML private VBox currentChallengeVbox;
     @FXML private ImageView challengeImage;
@@ -176,7 +175,5 @@ public class HomeController {
 
         new Thread(task).start();
     }
-
-    public static void setUser(User userData) { user = userData; }
 
 }

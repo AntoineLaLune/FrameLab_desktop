@@ -1,8 +1,8 @@
 package fr.bts.iris.slam.controller;
 
-import fr.bts.iris.slam.Main;
 import fr.bts.iris.slam.dto.UserResponse;
 import fr.bts.iris.slam.model.User;
+import fr.bts.iris.slam.model.ViewEnum;
 import fr.bts.iris.slam.service.LoginService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -13,7 +13,9 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-public class LoginController {
+import static fr.bts.iris.slam.Main.navTo;
+
+public class LoginController extends Controller {
 
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
@@ -40,8 +42,7 @@ public class LoginController {
                 User user = task.get().getUserData();
                 if (user != null) {
                     feedbackLabel.setText("Bienvenue, " + user.getEmail() + " !");
-                    HomeController.setUser(user);
-                    Main.showHomeScreen();
+                    Controller homeController = navTo(ViewEnum.HOME);
                 } else {
                     feedbackLabel.setText(task.get().getMessage());
                 }
@@ -56,5 +57,4 @@ public class LoginController {
 
         new Thread(task).start();
     }
-
 }
