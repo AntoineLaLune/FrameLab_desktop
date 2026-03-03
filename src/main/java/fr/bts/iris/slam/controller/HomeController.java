@@ -24,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import static fr.bts.iris.slam.Main.navTo;
@@ -50,6 +49,13 @@ public class HomeController extends Controller {
     private static String dir;
 
     private final ChallengeService challengeService = new ChallengeService();
+
+    @Override
+    protected void setUser(String name, User value) { // ← Temporary send the user with a setter, for development only (Will be changed)
+        if (name == "default") {
+            user = value;
+        }
+    }
 
     public void initialize() {
         challengeDownloadButton.setOnAction(e -> {
@@ -93,7 +99,7 @@ public class HomeController extends Controller {
         for (int i = 0; i < projects.size(); i++) {
             int project_id = projects.get(i).getId();
             Path path = Path.of(dir + String.valueOf(project_id));
-            if (Files.exists(path)) {
+            if (!Files.exists(path)) {
                 projectDAO.deteteById(i);
             }
         }

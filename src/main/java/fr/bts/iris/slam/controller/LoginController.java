@@ -43,6 +43,7 @@ public class LoginController extends Controller {
                 if (user != null) {
                     feedbackLabel.setText("Bienvenue, " + user.getEmail() + " !");
                     Controller homeController = navTo(ViewEnum.HOME);
+                    homeController.setUser("default", user); // ← Temporary send the user with a setter, for development only (Will be changed)
                 } else {
                     feedbackLabel.setText(task.get().getMessage());
                 }
