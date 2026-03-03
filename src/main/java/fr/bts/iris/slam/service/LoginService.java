@@ -7,6 +7,8 @@ import fr.bts.iris.slam.exceptions.LoginServiceException;
 import fr.bts.iris.slam.model.UrlEnum;
 
 import java.io.IOException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -18,7 +20,11 @@ public class LoginService {
     private final ObjectMapper mapper;
 
     public LoginService() {
-        this.client = HttpClient.newHttpClient();
+        CookieManager cookieManager = new CookieManager();
+        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        this.client = HttpClient.newBuilder()
+                .cookieHandler(cookieManager)
+                .build();
         this.mapper = new ObjectMapper();
     }
 
