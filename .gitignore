@@ -1,3 +1,10 @@
+# --- From AntoineLaLune ---
+Users/
+Challenges/
+framelab.db
+dependency-reduced-pom.xml
+.idea/
+
 # --- From GitHub ---
 
 # Compiled class file
@@ -13,7 +20,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+.jar
 *.war
 *.nar
 *.ear
@@ -27,7 +34,7 @@ replay_pid*
 
 # --- From IntelliJ IDEA ---
 
-target/
+# target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

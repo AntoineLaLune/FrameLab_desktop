@@ -1,0 +1,35 @@
+.menu-button > .arrow-button {
+    -fx-padding: 0;
+}
+
+.menu-button > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
+
+* {
+    -fx-background-radius: 0;
+}
+
+.button {
+    -fx-border-color: #000000; -fx-background-color: #2C2C2C; -fx-text-fill: #FFFFFF;
+}
+
+.menu-button {
+    -fx-border-color: #000000; -fx-background-color: #2C2C2C;
+}
+
+.scroll-pane {
+    -fx-border-color: #2C2C2C;
+}
+
+.text-field {
+    -fx-border-color: #2C2C2C; -fx-background-color: #FFFFFF; -fx-text-fill: black;
+}
+
+.bold {
+	-fx-font-weight: bold;
+}
+
+.big {
+	-fx-font-size: 24;
+}

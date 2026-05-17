@@ -19,5 +19,5 @@ public class ChallengeResponse {
     public void setMessage(String message) { this.message = message; }
     public void setSuccess(String success) { this.success = success; }
     public void setChallenge(Challenge challenge) { this.challenge = challenge; }
-    
+
 }

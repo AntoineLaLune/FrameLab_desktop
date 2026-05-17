@@ -13,6 +13,22 @@ public class LayerDAO {
         this.connection = ConnectionManager.getConnection();
     }
 
+    public Layer get(int id) {
+        String sql = "SELECT * FROM layer WHERE id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            return new Layer(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("project_id")
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException("Get layer failed", e);
+        }
+    }
+
     public ArrayList<Layer> getByProjectId(int project_id) {
         ArrayList<Layer> projects = new ArrayList<>();
         String sql = "SELECT * FROM layer WHERE project_id = ? ORDER BY id";
@@ -29,7 +45,7 @@ public class LayerDAO {
             }
             return projects;
         } catch (SQLException e) {
-            throw new RuntimeException("Get projects failed", e);
+            throw new RuntimeException("Get layers failed", e);
         }
     }
 
@@ -51,25 +67,25 @@ public class LayerDAO {
         }
     }
 
-    public boolean deteteById(int id) {
+    public void deleteById(int id) {
         ArrayList<Layer> projects = new ArrayList<>();
         String sql = "DELETE FROM layer WHERE id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0;
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Delete layer failed", e);
         }
     }
 
-    public boolean deleteByProjectId(int project_id) {
+    public void deleteByProjectId(int project_id) {
         ArrayList<Layer> projects = new ArrayList<>();
         String sql = "DELETE FROM layer WHERE project_id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, project_id);
-            return pstmt.executeUpdate() > 0;
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Delete layer failed", e);
         }

@@ -14,7 +14,7 @@ public class Project {
     public Project(String name, int user_id, int challenge_id, String challenge_name) {
         this.id = -1;
         this.name = name;
-        this.layers = new ArrayList<Layer>();
+        this.layers = new ArrayList<>();
         this.user_id = user_id;
         this.challenge_id = challenge_id;
         this.challenge_name = challenge_name;
@@ -23,7 +23,7 @@ public class Project {
     public Project(int id, String name, int user_id, int challenge_id, String challenge_name) {
         this.id = id;
         this.name = name;
-        this.layers = new ArrayList<Layer>();
+        this.layers = new ArrayList<>();
         this.user_id = user_id;
         this.challenge_id = challenge_id;
         this.challenge_name = challenge_name;

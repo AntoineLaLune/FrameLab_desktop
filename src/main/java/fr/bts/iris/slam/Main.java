@@ -26,9 +26,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 
     public static Controller navTo(ViewEnum view) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(view.toString()));

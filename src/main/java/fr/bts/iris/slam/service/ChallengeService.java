@@ -17,7 +17,7 @@ public class ChallengeService {
     private final ObjectMapper mapper;
 
     public ChallengeService() {
-        this.client = HttpClient.newHttpClient();
+        this.client = ClientManager.getHttpClient();
         this.mapper = new ObjectMapper();
     }
 
@@ -42,10 +42,6 @@ public class ChallengeService {
         } catch (IOException | InterruptedException e) {
             throw new ChallengeServiceException("Impossible de contacter le serveur", e);
         }
-    }
-
-    public void download() {
-
     }
 
 }

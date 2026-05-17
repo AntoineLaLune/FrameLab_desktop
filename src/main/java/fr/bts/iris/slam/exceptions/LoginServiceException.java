@@ -4,7 +4,6 @@ public class LoginServiceException extends RuntimeException {
     public LoginServiceException(String message) {
         super(message);
     }
-
     public LoginServiceException(String message, Throwable cause) {
         super(message, cause);
     }

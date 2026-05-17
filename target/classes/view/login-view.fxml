@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.layout.Region?>
+<VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/24.0.1" fx:controller="fr.bts.iris.slam.controller.LoginController" stylesheets="view/stylesheet.css">
+    <padding><Insets topRightBottomLeft="20" /></padding>
+
+    <HBox>
+        <Label text="Email" />
+    </HBox>
+    <TextField fx:id="emailField" styleClass="text-field" promptText="Email" />
+
+    <HBox>
+        <Label text="Mot de passe" />
+    </HBox>
+    <PasswordField fx:id="passwordField" styleClass="text-field" promptText="Mot de passe" />
+
+    <Button onAction="#handleDemo" styleClass="button" text="Mode Demo" />
+    <Region prefWidth="64"/>
+    <Button onAction="#handleLogin" styleClass="button" text="Valider" />
+
+    <Label fx:id="feedbackLabel" />
+
+</VBox>

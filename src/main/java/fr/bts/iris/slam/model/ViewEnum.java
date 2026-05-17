@@ -4,7 +4,9 @@ public enum ViewEnum {
 
     LOGIN("/view/login-view.fxml"),
     REGISTER("/view/register-view.fxml"),
-    HOME("/view/home-view.fxml");
+    HOME("/view/home-view.fxml"),
+    EDITOR("/view/editor-view.fxml"),
+    SUBMIT("/view/submit-view.fxml");
 
     private final String view;
 

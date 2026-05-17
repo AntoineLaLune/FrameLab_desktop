@@ -18,25 +18,32 @@ public class ConnectionManager {
     }
 
     private static void initializeTables() {
-        String sql = """
-                CREATE TABLE IF NOT EXISTS project (
-                    id                      INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    name                    TEXT NOT NULL,
-                    user_id                 INTEGER NOT NULL,
-                    challenge_id            INTEGER NOT NULL,
-                    challenge_name          TEXT NOT NULL
-                );
-                CREATE TABLE IF NOT EXISTS layer (
-                    id                      INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    name                    TEXT NOT NULL,
-                    FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE
-                )
-                """;
+        String[] queries = {
+            """
+            CREATE TABLE IF NOT EXISTS project (
+                id             INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                name           TEXT NOT NULL,
+                user_id        INTEGER NOT NULL,
+                challenge_id   INTEGER NOT NULL,
+                challenge_name TEXT NOT NULL
+            );
+            """,
+                    """
+            CREATE TABLE IF NOT EXISTS layer (
+                id         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                name       TEXT NOT NULL,
+                project_id INTEGER NOT NULL,
+                FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE
+            );
+            """
+        };
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to create table(s): " + e.getMessage(), e);
+        for (String query : queries) {
+            try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                pstmt.execute();
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to create table(s): " + e.getMessage(), e);
+            }
         }
     }
 

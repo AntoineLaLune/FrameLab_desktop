@@ -1,7 +1,5 @@
 package fr.bts.iris.slam.model;
 
-import java.util.ArrayList;
-
 public class Layer {
 
     int id;

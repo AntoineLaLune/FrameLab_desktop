@@ -1,6 +1,5 @@
 package fr.bts.iris.slam.dao;
 
-import fr.bts.iris.slam.model.Layer;
 import fr.bts.iris.slam.model.Project;
 
 import java.sql.*;
@@ -36,6 +35,27 @@ public class ProjectDAO {
         }
     }
 
+    public Project get(int user_id, int id) {
+        Project project;
+        String sql = "SELECT * FROM project WHERE user_id = ? AND id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, user_id);
+            pstmt.setInt(2, id);
+            ResultSet rs = pstmt.executeQuery();
+            project = new Project(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("user_id"),
+                    rs.getInt("challenge_id"),
+                    rs.getString("challenge_name")
+            );
+            return project;
+        } catch (SQLException e) {
+            throw new RuntimeException("Get project failed", e);
+        }
+    }
+
     public Project getLast(int user_id) {
         Project project;
         String sql = "SELECT * FROM project WHERE user_id = ? ORDER BY id DESC LIMIT 1";
@@ -43,13 +63,13 @@ public class ProjectDAO {
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, user_id);
             ResultSet rs = pstmt.executeQuery();
-                project = new Project(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getInt("user_id"),
-                        rs.getInt("challenge_id"),
-                        rs.getString("challenge_name")
-                );
+            project = new Project(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("user_id"),
+                    rs.getInt("challenge_id"),
+                    rs.getString("challenge_name")
+            );
             return project;
         } catch (SQLException e) {
             throw new RuntimeException("Get last project failed", e);
@@ -119,13 +139,12 @@ public class ProjectDAO {
         }
     }
 
-    public boolean deteteById(int id) {
-        ArrayList<Project> projects = new ArrayList<>();
+    public void delete(int id) {
         String sql = "DELETE FROM project WHERE id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0;
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Delete project failed", e);
         }
