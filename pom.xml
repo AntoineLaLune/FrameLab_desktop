@@ -6,7 +6,7 @@
 
     <groupId>fr.bts.iris.slam</groupId>
     <artifactId>FrameLab</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>v1.0.1</version>
 
     <properties>
         <javafx.version>21.0.2</javafx.version>
@@ -59,6 +59,9 @@
                     <classifier>mac-aarch64</classifier>
                 </dependency>
             </dependencies>
+            <build>
+                <finalName>FrameLab-${project.version}_All_OS_except_macOS_Intel</finalName>
+            </build>
         </profile>
         <profile>
             <id>fat-jar_minus_mac-aarch64</id>
@@ -103,6 +106,9 @@
                     <classifier>mac</classifier>
                 </dependency>
             </dependencies>
+            <build>
+                <finalName>FrameLab-${project.version}_All_OS_except_macOS_Apple_Silicon</finalName>
+            </build>
         </profile>
     </profiles>
 
