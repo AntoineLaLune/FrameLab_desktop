@@ -6,15 +6,15 @@ fr/bts/iris/slam/exceptions/ChallengeServiceException.class
 fr/bts/iris/slam/dto/SubmitRequest.class
 fr/bts/iris/slam/service/LoginService.class
 fr/bts/iris/slam/model/UrlEnum.class
-fr/bts/iris/slam/model/Layer.class
 fr/bts/iris/slam/controller/LoginController.class
+fr/bts/iris/slam/model/Layer.class
 fr/bts/iris/slam/dto/UserResponse.class
 fr/bts/iris/slam/exceptions/SubmitServiceException.class
 fr/bts/iris/slam/model/Participation.class
 fr/bts/iris/slam/controller/HomeController.class
 fr/bts/iris/slam/dao/ConnectionManager.class
-fr/bts/iris/slam/service/ChallengeService.class
 fr/bts/iris/slam/dto/ChallengeResponse.class
+fr/bts/iris/slam/service/ChallengeService.class
 fr/bts/iris/slam/model/Challenge.class
 fr/bts/iris/slam/controller/LoginController$1.class
 fr/bts/iris/slam/dao/ProjectDAO.class

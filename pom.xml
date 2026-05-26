@@ -17,7 +17,7 @@
 
     <profiles>
         <profile>
-            <id>fat-jar</id>
+            <id>fat-jar_minus_mac</id>
             <dependencies>
                 <!-- Windows -->
                 <dependency>
@@ -57,6 +57,50 @@
                     <artifactId>javafx-base</artifactId>
                     <version>${javafx.version}</version>
                     <classifier>mac-aarch64</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>fat-jar_minus_mac-aarch64</id>
+            <dependencies>
+                <!-- Windows -->
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>win</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-base</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>win</classifier>
+                </dependency>
+                <!-- Linux -->
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>linux</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-base</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>linux</classifier>
+                </dependency>
+                <!-- macOS Intel -->
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>mac</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-base</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>mac</classifier>
                 </dependency>
             </dependencies>
         </profile>
