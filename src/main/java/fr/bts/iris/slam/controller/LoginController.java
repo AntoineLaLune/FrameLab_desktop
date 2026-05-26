@@ -70,7 +70,7 @@ public class LoginController extends Controller {
         setCurrentUser(user);
 
         feedbackLabel.setText("Bienvenue, " + user.getEmail() + " !");
-        Controller homeController = navTo(ViewEnum.HOME);
+        navTo(ViewEnum.HOME);
     }
 
 }

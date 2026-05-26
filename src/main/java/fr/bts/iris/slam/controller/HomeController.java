@@ -1,5 +1,6 @@
 package fr.bts.iris.slam.controller;
 
+import fr.bts.iris.slam.Main;
 import fr.bts.iris.slam.dao.ProjectDAO;
 import fr.bts.iris.slam.dto.ChallengeResponse;
 import fr.bts.iris.slam.model.*;
@@ -25,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import static fr.bts.iris.slam.Main.navTo;
@@ -81,9 +83,8 @@ public class HomeController extends Controller {
             challenge.setId(-1);
             challenge.setTitle("Demo");
 
-            File file = new File("src/main/resources/fox.png");
-            Image image = new Image(file.toURI().toString());
-            challengeImage.setImage(image);
+            String imagePath = Objects.requireNonNull(Main.class.getResource("/fox.png")).toExternalForm();
+            challengeImage.setImage(new Image(imagePath));
             challengeTitleText.setText("Demo");
             challengeDescriptionText.setText("Demo");
             challengeStartDateText.setText("Début : demo");
