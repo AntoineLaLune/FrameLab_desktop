@@ -44,7 +44,7 @@ Vous devez maintenant avoir `openjdk version 21.XX.XX` en sortie, vous êtes pr�
 
 ### Téléchargement du Fat JAR
 
-Dans les [sorties](https://github.com/AntoineLaLune/FrameLab_desktop/releases) / [releases](https://github.com/AntoineLaLune/FrameLab_desktop/releases), deux versions de FrameLab vous sont proposées, les deux fonctionneront si vous êtes sous Linux ou Windows. Si vous êtes sous un Mac Intel, téléchargez la version `All_OS_except_macOS_Apple_Silicon`, au contraire, si vous êtes sous un Mac M1 / M2 / M4 / etc, téléchargez la version `All_OS_except_macOS_Intel`.
+Dans les [sorties](https://github.com/AntoineLaLune/FrameLab_desktop/releases) / [releases](https://github.com/AntoineLaLune/FrameLab_desktop/releases), deux versions de FrameLab vous sont proposées, si vous êtes sous Linux, Windows ou Mac Silicon, téléchargez la version `All_OS`, et si vous êtes sous Mac Intel, téléchargez la version `macOS_Intel`.
 
 > [!NOTE]
 > Sachez que le programme crée des dossiers au même niveau que celui-ci, il est donc recommandé de le placer dans un dossier vide qui lui est réservé.
