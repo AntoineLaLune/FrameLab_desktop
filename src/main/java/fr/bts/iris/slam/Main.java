@@ -21,7 +21,7 @@ public class Main extends Application {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(view.toString()));
         Scene scene = new Scene(loader.load());
-        stage.setTitle(view.toString());
+        stage.setTitle(view.name());
         stage.setScene(scene);
         stage.show();
     }
@@ -33,7 +33,7 @@ public class Main extends Application {
         Parent root = loader.load();
 
         Scene newScene = new Scene(root);
-        primaryStage.setTitle(view.toString());
+        primaryStage.setTitle(view.name());
         primaryStage.setScene(newScene);
         return loader.getController();
     }

@@ -242,12 +242,14 @@ public class EditorController extends Controller {
     }
 
     protected void changeCurrentLayer(int id, RadioButton layerRadioButton) {
+        int oldLayerId = currentLayerId;
         currentLayerId = id;
         for (int i = 0; i < layerRadioButtons.size(); i++) {
             int y = layerRadioButtons.size()-1-i;
             layerRadioButtons.get(y).setSelected(false);
             layerRadioButton.setSelected(true);
         }
+        if (currentLayerId == 0) { handleRemoveTool(oldLayerId); }
     }
 
     private void updateCanvaPreview() {
@@ -437,6 +439,22 @@ public class EditorController extends Controller {
         });
         canva.setOnMouseReleased(mouseEvent -> graphicsContext.restore());
     }
+    private void handleRemoveTool(int canvasId) {
+        penSVG.setFill(Color.TRANSPARENT);
+        penSVG.setStroke(Color.BLACK);
+        eraserSVG.setFill(Color.TRANSPARENT);
+        eraserSVG.setStroke(Color.BLACK);
+
+        Canvas canva = canvas.get(canvasId);
+        GraphicsContext graphicsContext = canva.getGraphicsContext2D();
+        graphicsContext.setLineCap(StrokeLineCap.ROUND);
+        graphicsContext.setLineJoin(StrokeLineJoin.ROUND);
+        canva.setOnMousePressed(mouseEvent -> { return; });
+        canva.setOnMouseDragged(mouseEvent -> { return; });
+        canva.setOnMouseReleased(mouseEvent -> { return; });
+
+        if (isConfigurationMenuPresent) {destroyLastSection();}
+    }
 
     // Filter and transformation ↓
     @FXML
@@ -463,6 +481,9 @@ public class EditorController extends Controller {
             filter(writableImage, FilterEnum.INVERSE);
             updateCanvaPreview();
         }
+        if (Objects.equals(menuItemId, "luminosity")) {
+            buildLuminositySection(writableImage);
+        }
         if (Objects.equals(menuItemId, "rotate")) {
             buildRotationSection(writableImage);
         }
@@ -482,6 +503,10 @@ public class EditorController extends Controller {
                 }
                 if (filter == FilterEnum.INVERSE) {
                     int destinationColor = inverseFilter(sourceColor);
+                    writer.setArgb(x, y, destinationColor);
+                }
+                if (filter == FilterEnum.LUMINOSITY) {
+                    int destinationColor = luminosityFilter(sourceColor);
                     writer.setArgb(x, y, destinationColor);
                 }
             }
@@ -507,6 +532,21 @@ public class EditorController extends Controller {
         int lum = (int) (red * 0.2126 + green * 0.7152 + blue * 0.0722);
 
         return (alpha << 24) | (lum << 16) | (lum << 8) | lum;
+    }
+    protected int luminosityFilter(int argb) {
+        String elementId = "#luminositySlider";
+        Slider luminositySlider = (Slider) editorTop.getChildren().get(1).lookup(elementId);
+        double factor = 1.0 + (luminositySlider.getValue() / 100.0);
+
+        int alpha = (argb >> 24) & 0xFF;
+        if (alpha == 0) {return argb;}
+
+        int red = (argb >> 16) & 0xFF; int green = (argb >> 8) & 0xFF; int blue = argb & 0xFF;
+
+        red = (int) (red * factor); green = (int) (green * factor); blue = (int) (blue * factor);
+        red = Math.min(255, Math.max(0, red)); green = Math.min(255, Math.max(0, green)); blue = Math.min(255, Math.max(0, blue));
+
+        return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
 
     protected void rotation(Image source, GraphicsContext graphicsContext, int angle) {
@@ -604,6 +644,46 @@ public class EditorController extends Controller {
 
         filterConfigurator.getChildren().add(angleSlider);
         filterConfigurator.getChildren().add(rotateButton);
+    }
+
+    public void buildLuminositySection(WritableImage writableImage) {
+        HBox filterConfigurator = new HBox();
+        filterConfigurator.setId("filterConfigurator");
+        this.editorTop.getChildren().add(filterConfigurator);
+        this.isConfigurationMenuPresent = true;
+
+        Slider luminositySlider = new Slider();
+        Text luminosityValue = new Text();
+        Button button = new Button();
+        Region shortRegion = new Region(); shortRegion.setPrefWidth(8);
+        Region region = new Region(); region.setPrefWidth(8);
+
+        luminositySlider.setId("luminositySlider");
+        luminositySlider.setMin(-100);
+        luminositySlider.setMax(100);
+        luminositySlider.setValue(0);
+        luminositySlider.setShowTickLabels(true);
+        luminositySlider.setShowTickMarks(true);
+        luminositySlider.setMajorTickUnit(25);
+        luminosityValue.setText(Double.toString((int)luminositySlider.getValue()));
+        luminositySlider.setOnMouseDragged(mouseEvent -> {
+            luminosityValue.setText(Double.toString((int)luminositySlider.getValue()));
+            currentLineWidth = luminositySlider.getValue();
+        });
+        luminosityValue.setId("luminosityValue");
+        luminosityValue.setText("0.0");
+        button.setText("Cacher");
+        button.setOnAction(actionEvent -> {
+            clearCurrentLayer();
+            filter(writableImage, FilterEnum.LUMINOSITY);
+            updateCanvaPreview();
+            destroyLastSection();
+        });
+        filterConfigurator.getChildren().add(luminositySlider);
+        filterConfigurator.getChildren().add(shortRegion);
+        filterConfigurator.getChildren().add(luminosityValue);
+        filterConfigurator.getChildren().add(region);
+        filterConfigurator.getChildren().add(button);
     }
 
     public void buildDrawSection() {
