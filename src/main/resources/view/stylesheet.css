@@ -33,3 +33,7 @@
 .big {
 	-fx-font-size: 24;
 }
+
+* {
+    -fx-border-width: 2px;
+}

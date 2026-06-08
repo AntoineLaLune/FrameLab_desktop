@@ -29,6 +29,7 @@
                     <items>
                         <MenuItem fx:id="grayColors" mnemonicParsing="false" onAction="#selectFiler" text="Noir et blanc" />
                         <MenuItem fx:id="inverseColors" mnemonicParsing="false" onAction="#selectFiler" text="Négatif linéaire" />
+                        <MenuItem fx:id="luminosity" mnemonicParsing="false" onAction="#selectFiler" text="Luminosité" />
                         <MenuItem fx:id="rotate" mnemonicParsing="false" onAction="#selectFiler" text="Rotation" />
                     </items>
                 </MenuButton>
