@@ -98,9 +98,20 @@ public class EditorController extends Controller {
         scaleSlider.setId("scaleSlider");
         scaleSlider.setMin(0.25); scaleSlider.setMax(1); scaleSlider.setValue(0.25);
         scaleSlider.setMajorTickUnit(0.1); scaleSlider.setShowTickMarks(true);
-        scaleSlider.setOnMouseDragged(mouseEvent -> this.scale(scaleSlider.getValue()));
+
+        Region regionBetweenHBox = new Region();
+        regionBetweenHBox.prefWidth(16);
+
+        Text zoomText = new Text("Zoom: " + (scaleSlider.getValue()*100));
+
+        scaleSlider.setOnMouseDragged(mouseEvent -> {
+            this.scale(scaleSlider.getValue());
+            zoomText.setText("Zoom: " + Math.round(scaleSlider.getValue()*100) + "%");
+        });
 
         this.editorBottom.getChildren().add(scaleSlider);
+        this.editorBottom.getChildren().add(regionBetweenHBox);
+        this.editorBottom.getChildren().add(zoomText);
     }
 
     @Override
@@ -275,6 +286,7 @@ public class EditorController extends Controller {
             graphicsContext.fill();
             graphicsContext.restore();
         }
+        updateCanvaPreview();
     }
 
     protected void clearCurrentLayer() {
@@ -289,6 +301,7 @@ public class EditorController extends Controller {
         }
         graphicsContext.fill();
         graphicsContext.restore();
+        updateCanvaPreview();
     }
 
     protected void scale(double value) {
@@ -484,6 +497,9 @@ public class EditorController extends Controller {
         if (Objects.equals(menuItemId, "luminosity")) {
             buildLuminositySection(writableImage);
         }
+        if (Objects.equals(menuItemId, "saturation")) {
+            buildSaturationSection(writableImage);
+        }
         if (Objects.equals(menuItemId, "rotate")) {
             buildRotationSection(writableImage);
         }
@@ -493,6 +509,19 @@ public class EditorController extends Controller {
         WritableImage destination = new WritableImage(this.canvasSizeX, this.canvasSizeY);
         PixelReader reader = source.getPixelReader();
         PixelWriter writer = destination.getPixelWriter();
+
+        String elementId = null;
+        double factor = 1;
+        if (filter == FilterEnum.LUMINOSITY) {
+            elementId = "#luminositySlider";
+        }
+        if (filter == FilterEnum.SATURATION) {
+            elementId = "#saturationSlider";
+        }
+        if (elementId != null) {
+            Slider slider = (Slider) editorTop.getChildren().get(1).lookup(elementId);
+            factor = 1.0 + (slider.getValue() / 100.0);
+        }
 
         for (int x = 0; x < this.canvasSizeX; x++) {
             for (int y = 0; y < this.canvasSizeY; y++) {
@@ -506,7 +535,11 @@ public class EditorController extends Controller {
                     writer.setArgb(x, y, destinationColor);
                 }
                 if (filter == FilterEnum.LUMINOSITY) {
-                    int destinationColor = luminosityFilter(sourceColor);
+                    int destinationColor = luminosityFilter(sourceColor, factor);
+                    writer.setArgb(x, y, destinationColor);
+                }
+                if (filter == FilterEnum.SATURATION) {
+                    int destinationColor = saturationFilter(sourceColor, factor);
                     writer.setArgb(x, y, destinationColor);
                 }
             }
@@ -533,18 +566,38 @@ public class EditorController extends Controller {
 
         return (alpha << 24) | (lum << 16) | (lum << 8) | lum;
     }
-    protected int luminosityFilter(int argb) {
-        String elementId = "#luminositySlider";
-        Slider luminositySlider = (Slider) editorTop.getChildren().get(1).lookup(elementId);
-        double factor = 1.0 + (luminositySlider.getValue() / 100.0);
-
+    protected int luminosityFilter(int argb, double factor) {
         int alpha = (argb >> 24) & 0xFF;
-        if (alpha == 0) {return argb;}
+        if (alpha == 0) return argb; // Pixel transparent, on ne fait rien
 
-        int red = (argb >> 16) & 0xFF; int green = (argb >> 8) & 0xFF; int blue = argb & 0xFF;
+        int red = (argb >> 16) & 0xFF;
+        int green = (argb >> 8) & 0xFF;
+        int blue = argb & 0xFF;
 
-        red = (int) (red * factor); green = (int) (green * factor); blue = (int) (blue * factor);
-        red = Math.min(255, Math.max(0, red)); green = Math.min(255, Math.max(0, green)); blue = Math.min(255, Math.max(0, blue));
+        // Application du facteur et bridage (clamping) entre 0 et 255
+        red = Math.min(255, Math.max(0, (int) (red * factor)));
+        green = Math.min(255, Math.max(0, (int) (green * factor)));
+        blue = Math.min(255, Math.max(0, (int) (blue * factor)));
+
+        return (alpha << 24) | (red << 16) | (green << 8) | blue;
+    }
+    protected int saturationFilter(int argb, double saturationFactor) {
+        int alpha = (argb >> 24) & 0xFF;
+        if (alpha == 0) return argb;
+
+        int red = (argb >> 16) & 0xFF;
+        int green = (argb >> 8) & 0xFF;
+        int blue = argb & 0xFF;
+
+        int gray = (int) (0.299 * red + 0.587 * green + 0.114 * blue);
+
+        red = (int) (gray + saturationFactor * (red - gray));
+        green = (int) (gray + saturationFactor * (green - gray));
+        blue = (int) (gray + saturationFactor * (blue - gray));
+
+        red = Math.min(255, Math.max(0, red));
+        green = Math.min(255, Math.max(0, green));
+        blue = Math.min(255, Math.max(0, blue));
 
         return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
@@ -682,6 +735,46 @@ public class EditorController extends Controller {
         filterConfigurator.getChildren().add(luminositySlider);
         filterConfigurator.getChildren().add(shortRegion);
         filterConfigurator.getChildren().add(luminosityValue);
+        filterConfigurator.getChildren().add(region);
+        filterConfigurator.getChildren().add(button);
+    }
+
+    public void buildSaturationSection(WritableImage writableImage) {
+        HBox filterConfigurator = new HBox();
+        filterConfigurator.setId("filterConfigurator");
+        this.editorTop.getChildren().add(filterConfigurator);
+        this.isConfigurationMenuPresent = true;
+
+        Slider saturationSlider = new Slider();
+        Text saturationValue = new Text();
+        Button button = new Button();
+        Region shortRegion = new Region(); shortRegion.setPrefWidth(8);
+        Region region = new Region(); region.setPrefWidth(8);
+
+        saturationSlider.setId("saturationSlider");
+        saturationSlider.setMin(-100);
+        saturationSlider.setMax(100);
+        saturationSlider.setValue(0);
+        saturationSlider.setShowTickLabels(true);
+        saturationSlider.setShowTickMarks(true);
+        saturationSlider.setMajorTickUnit(25);
+        saturationValue.setText(Double.toString((int)saturationSlider.getValue()));
+        saturationSlider.setOnMouseDragged(mouseEvent -> {
+            saturationValue.setText(Double.toString((int)saturationSlider.getValue()));
+            currentLineWidth = saturationSlider.getValue();
+        });
+        saturationValue.setId("saturationValue");
+        saturationValue.setText("0.0");
+        button.setText("Cacher");
+        button.setOnAction(actionEvent -> {
+            clearCurrentLayer();
+            filter(writableImage, FilterEnum.SATURATION);
+            updateCanvaPreview();
+            destroyLastSection();
+        });
+        filterConfigurator.getChildren().add(saturationSlider);
+        filterConfigurator.getChildren().add(shortRegion);
+        filterConfigurator.getChildren().add(saturationValue);
         filterConfigurator.getChildren().add(region);
         filterConfigurator.getChildren().add(button);
     }

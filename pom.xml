@@ -6,7 +6,7 @@
 
     <groupId>fr.bts.iris.slam</groupId>
     <artifactId>FrameLab</artifactId>
-    <version>v1.0.1</version>
+    <version>v1.1.0</version>
 
     <properties>
         <javafx.version>21.0.2</javafx.version>

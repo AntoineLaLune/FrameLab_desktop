@@ -4,5 +4,6 @@ public enum FilterEnum {
     GRAY,
     INVERSE,
     LUMINOSITY,
+    SATURATION,
     BLUR
 }

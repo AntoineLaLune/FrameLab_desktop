@@ -128,6 +128,7 @@
                         <TextField fx:id="projectNameField" styleClass="text-field" promptText="Nom du project" />
                         <Button onAction="#handleCreateProject" styleClass="button" text="Créer" />
                     </HBox>
+                    <Text fx:id="projectInfo"></Text>
                 </VBox>
 
             </HBox>
