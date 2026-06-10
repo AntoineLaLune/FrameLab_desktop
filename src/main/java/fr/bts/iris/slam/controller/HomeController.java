@@ -47,6 +47,7 @@ public class HomeController extends Controller {
 
     @FXML private VBox projectsSection;
     @FXML private TextField projectNameField;
+    @FXML private Text projectInfo;
 
     private static Challenge challenge;
     private static ProjectDAO projectDAO;
@@ -151,6 +152,13 @@ public class HomeController extends Controller {
     @FXML
     private void handleCreateProject() throws IOException {
         String name = projectNameField.getText();
+        if (name.length()<3) {
+            projectInfo.setText("Le nom de votre projet doit comporter au moins 3 caractères");
+            return;
+        } else {
+            projectInfo.setText("");
+        }
+
         Project project = new Project(name, getCurrentUser().getId(), challenge.getId(), challenge.getTitle());
         projectDAO.insert(project); project.setId(projectDAO.getLastId(getCurrentUser().getId()));
 
@@ -188,19 +196,19 @@ public class HomeController extends Controller {
         Path path = Path.of(System.getProperty("user.home"), challengeTextField.getText() + ".png");
 
         File challengeFile = new File(CHALLENGES_DIR + challenge.getId() + ".png");
-        File homeFile = new File(System.getProperty("user.home"), challengeTextField.getText() + ".png");
+        File jarRootFolder = new File(challengeTextField.getText() + ".png");
 
         if (!Files.exists(path)) {
             Image challengeImage = new Image(challengeFile.toURI().toString());
             BufferedImage bufferedChallengeImage = SwingFXUtils.fromFXImage(challengeImage, null);
 
-            ImageIO.write(bufferedChallengeImage, "png", homeFile);
+            ImageIO.write(bufferedChallengeImage, "png", jarRootFolder);
 
             challengeFeedbackLabel.setVisible(true);
-            challengeFeedbackLabel.setText("Succès, retrouvez votre image sous " + homeFile.getAbsolutePath());
+            challengeFeedbackLabel.setText("Succès, retrouvez votre image sous " + jarRootFolder.getAbsolutePath());
         } else {
             challengeFeedbackLabel.setVisible(true);
-            challengeFeedbackLabel.setText("Echec, une image existe déjà sous " + homeFile.getAbsolutePath());
+            challengeFeedbackLabel.setText("Echec, une image existe déjà sous " + jarRootFolder.getAbsolutePath());
         }
 
     }
