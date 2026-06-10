@@ -60,7 +60,7 @@
                 </dependency>
             </dependencies>
             <build>
-                <finalName>FrameLab-${project.version}_All_OS_except_macOS_Intel</finalName>
+                <finalName>FrameLab-${project.version}</finalName>
             </build>
         </profile>
         <profile>
@@ -81,7 +81,7 @@
                 </dependency>
             </dependencies>
             <build>
-                <finalName>FrameLab-${project.version}_All_OS_except_macOS_Apple_Silicon</finalName>
+                <finalName>FrameLab-${project.version}_macOS_Intel</finalName>
             </build>
         </profile>
     </profiles>
